@@ -1,8 +1,11 @@
-﻿namespace TaskManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TaskManagementSystem.Models
 {
-    public class Task
+    public class TaskItem
     {
-        public int TaskId { get; set; }    // Primary Key
+        [Key]
+        public int TaskItemId { get; set; }    // Primary Key
         public required string Title { get; set; }
         public required string Description { get; set; }
         public required string Status { get; set; } // For example: Pending, In Progress, Completed
