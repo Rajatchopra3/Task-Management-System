@@ -34,10 +34,7 @@ namespace TaskManagementSystem.Controllers
                 return Unauthorized("Invalid credentials.");
             }
 
-            // Debugging: Output password and hash to console
-            Console.WriteLine($"Input password: {loginRequest.Password}");
-            Console.WriteLine($"Stored hash: {user.PasswordHash}");
-
+          
             // Verify password hash
             bool isPasswordValid = BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash);
 
