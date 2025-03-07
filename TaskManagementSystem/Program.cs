@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using TaskManagementSystem.Models; // Make sure to use the correct namespace for your models
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using TaskManagementSystem.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Add Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -14,6 +15,29 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TaskManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TaskManagementConnection"))
 );
+
+// Add JWT authentication to services
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var secretKey = builder.Configuration["Jwt:SecretKey"];
+        if (string.IsNullOrEmpty(secretKey))
+        {
+            throw new Exception("JWT SecretKey is missing in the configuration.");
+        }
+
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"], // Get Issuer from appsettings
+            ValidAudience = builder.Configuration["Jwt:Audience"], // Get Audience from appsettings
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(secretKey) // Use the secret key
+            )
+        };
+    });
 
 var app = builder.Build();
 
@@ -26,7 +50,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+// Add authentication and authorization middleware
+app.UseAuthentication();  // This ensures authentication middleware is used
+app.UseAuthorization();   // This ensures authorization middleware is used
 
 app.MapControllers();
 
