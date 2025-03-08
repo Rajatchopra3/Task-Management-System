@@ -12,7 +12,7 @@ namespace TaskManagementSystem.Models
         public required string Status { get; set; }  // For example: Pending, In Progress, Completed
 
         public int AssigneeId { get; set; }  // Foreign Key to User
-        public int WorkflowId { get; set; }  // Foreign Key to Workflow (New)
+        public int? WorkflowId { get; set; }  // Foreign Key to Workflow (New)
 
         public DateTime DueDate { get; set; }
         public DateTime CreatedAt { get; set; }

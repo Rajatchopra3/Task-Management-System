@@ -11,5 +11,6 @@ namespace TaskManagementSystem.Services
         Task<bool> DeleteTaskAsync(int taskId);
         Task<IEnumerable<TaskAssignment>> GetTaskAssignmentsByTaskIdAsync(int taskId);
         Task<TaskAssignment?> AssignUserToTaskAsync(int taskId, int userId);
+        Task<TaskItem> ReassignTaskAsync(int taskItemId, int newUserId);
     }
 }

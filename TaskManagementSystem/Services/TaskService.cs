@@ -98,5 +98,33 @@ namespace TaskManagementSystem.Services
             return taskAssignment;
         }
 
+        public async Task<TaskItem> ReassignTaskAsync(int taskItemId, int newUserId)
+        {
+            var taskItem = await _context.Tasks
+                .FirstOrDefaultAsync(t => t.TaskItemId == taskItemId);
+
+            if (taskItem == null)
+            {
+                throw new KeyNotFoundException("Task not found.");
+            }
+
+            // Fetch the new assignee user
+            var newAssignee = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserId == newUserId);
+
+            if (newAssignee == null)
+            {
+                throw new InvalidOperationException("User not found.");
+            }
+
+            // Reassign the task to the new user
+            taskItem.AssigneeId = newUserId;
+            taskItem.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return taskItem;
+        }
+
     }
 }

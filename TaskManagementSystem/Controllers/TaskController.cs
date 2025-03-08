@@ -90,5 +90,26 @@ namespace TaskManagementSystem.Controllers
             var taskAssignment = await _taskService.AssignUserToTaskAsync(taskItemId, userId);
             return Ok(taskAssignment);
         }
+
+        // PUT: api/task/reassign/{taskItemId} - Only Admins can reassign tasks
+        [HttpPut("reassign/{taskItemId}")]
+        [Authorize(Roles = "Admin")]  // Only Admin role users can reassign tasks
+        public async Task<ActionResult<TaskItem>> ReassignTask(int taskItemId, [FromBody] int newUserId)
+        {
+            try
+            {
+                var taskItem = await _taskService.ReassignTaskAsync(taskItemId, newUserId);
+                return Ok(taskItem);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Task not found.");
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest("User not found.");
+            }
+        }
+
     }
 }
