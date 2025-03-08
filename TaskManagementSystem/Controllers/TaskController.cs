@@ -43,6 +43,17 @@ namespace TaskManagementSystem.Controllers
         [Authorize]  // Ensure the user is authenticated
         public async Task<ActionResult<TaskItem>> CreateTask(TaskItem taskItem)
         {
+            // Optional: Validate WorkflowId if it's provided
+            if (taskItem.WorkflowId.HasValue)
+            {
+                // Check if the WorkflowId exists in the database
+                var workflow = await _taskService.GetWorkflowByIdAsync(taskItem.WorkflowId.Value);
+                if (workflow == null)
+                {
+                    return BadRequest("Invalid Workflow ID.");
+                }
+            }
+
             var createdTask = await _taskService.CreateTaskAsync(taskItem);
             return CreatedAtAction(nameof(GetTaskById), new { id = createdTask.TaskItemId }, createdTask);
         }
@@ -52,6 +63,17 @@ namespace TaskManagementSystem.Controllers
         [Authorize]  // Ensure the user is authenticated
         public async Task<ActionResult<TaskItem>> UpdateTask(int id, TaskItem taskItem)
         {
+            // Optional: Validate WorkflowId if it's provided
+            if (taskItem.WorkflowId.HasValue)
+            {
+                // Check if the WorkflowId exists in the database
+                var workflow = await _taskService.GetWorkflowByIdAsync(taskItem.WorkflowId.Value);
+                if (workflow == null)
+                {
+                    return BadRequest("Invalid Workflow ID.");
+                }
+            }
+
             var updatedTask = await _taskService.UpdateTaskAsync(id, taskItem);
             if (updatedTask == null)
             {
@@ -110,6 +132,5 @@ namespace TaskManagementSystem.Controllers
                 return BadRequest("User not found.");
             }
         }
-
     }
 }

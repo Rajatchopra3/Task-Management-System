@@ -12,5 +12,7 @@ namespace TaskManagementSystem.Services
         Task<IEnumerable<TaskAssignment>> GetTaskAssignmentsByTaskIdAsync(int taskId);
         Task<TaskAssignment?> AssignUserToTaskAsync(int taskId, int userId);
         Task<TaskItem> ReassignTaskAsync(int taskItemId, int newUserId);
+        // Add this method to validate WorkflowId
+        Task<Workflow?> GetWorkflowByIdAsync(int workflowId);
     }
 }
