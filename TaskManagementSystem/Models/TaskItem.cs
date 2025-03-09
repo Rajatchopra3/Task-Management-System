@@ -7,6 +7,7 @@ namespace TaskManagementSystem.Models
         [Key]
         public int TaskItemId { get; set; }  // Primary Key
 
+        // Ensure these properties are non-nullable
         public required string Title { get; set; }
         public required string Description { get; set; }
         public required string Status { get; set; }  // For example: Pending, In Progress, Completed
@@ -18,7 +19,12 @@ namespace TaskManagementSystem.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public User ?Assignee { get; set; }  // Navigation property
-        public Workflow? Workflow { get; set; }  // Navigation property (New)
+        // RowVersion for concurrency control
+        [Timestamp]
+        public byte[]? RowVersion { get; set; }  // This will be managed by EF Core
+
+        // Navigation properties
+        public User? Assignee { get; set; }  // Navigation property to User
+        public Workflow? Workflow { get; set; }  // Navigation property to Workflow
     }
 }

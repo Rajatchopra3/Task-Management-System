@@ -80,14 +80,20 @@ namespace TaskManagementSystem.Services
 
 
 
-        public async Task<TaskItem?> UpdateTaskAsync(int taskId, TaskItem taskItem)
+        public async Task<TaskItem?> UpdateTaskAsync(int taskId, TaskItem taskItem, int currentUserId, bool isAdmin)
         {
             var existingTask = await _context.Tasks.FindAsync(taskId);
-            if (existingTask == null) return null;
+            if (existingTask == null)
+                return null;  // Return null if task doesn't exist
 
-            // Check if the WorkflowId is valid if it's provided
+            // Check if the WorkflowId is valid and allow update only if the user is an admin
             if (taskItem.WorkflowId.HasValue)
             {
+                if (!isAdmin)
+                {
+                    return null;  // Only admins can change the WorkflowId
+                }
+
                 var workflow = await _context.Workflows.FindAsync(taskItem.WorkflowId.Value);
                 if (workflow == null)
                 {
@@ -96,54 +102,57 @@ namespace TaskManagementSystem.Services
                 existingTask.Workflow = workflow;  // Update Workflow if valid
             }
 
-            // Update other properties
+            // Update other properties of the task
             existingTask.Title = taskItem.Title;
             existingTask.Description = taskItem.Description;
             existingTask.Status = taskItem.Status;
             existingTask.DueDate = taskItem.DueDate;
-            existingTask.AssigneeId = taskItem.AssigneeId;
-            existingTask.WorkflowId = taskItem.WorkflowId;  // Update WorkflowId
+            existingTask.WorkflowId = taskItem.WorkflowId;
             existingTask.UpdatedAt = DateTime.Now;
 
-            // If the assignee has changed, update TaskAssignment
+            // Allow AssigneeId change only if the user is an admin or the current assignee
             if (existingTask.AssigneeId != taskItem.AssigneeId)
             {
+                if (!isAdmin && existingTask.AssigneeId != currentUserId)
+                {
+                    return null; // Prevent updating if the user is not the assignee or an admin
+                }
+
+                // Get the new assignee details
                 var assignee = await _context.Users.FindAsync(taskItem.AssigneeId);
                 if (assignee == null)
                 {
                     throw new KeyNotFoundException("Assignee not found.");
                 }
 
-                // Update the TaskAssignment
-                var taskAssignment = await _context.TaskAssignments
-                    .FirstOrDefaultAsync(ta => ta.TaskItemId == taskId);
-                if (taskAssignment != null)
+                // Update the AssigneeId on the Task
+                existingTask.AssigneeId = taskItem.AssigneeId;
+
+                // Always create a new TaskAssignment to track the assignment history
+                var newTaskAssignment = new TaskAssignment
                 {
-                    taskAssignment.UserId = taskItem.AssigneeId;
-                    taskAssignment.AssignedAt = DateTime.Now; // Re-assign the time if assignee changes
-                    _context.TaskAssignments.Update(taskAssignment);
-                }
-                else
-                {
-                    // If TaskAssignment doesn't exist, create a new one
-                    var newTaskAssignment = new TaskAssignment
-                    {
-                        TaskItemId = taskId,
-                        UserId = taskItem.AssigneeId,
-                        AssignedAt = DateTime.Now,
-                        TaskItem = existingTask,
-                        User = assignee
-                    };
-                    _context.TaskAssignments.Add(newTaskAssignment);
-                }
+                    TaskItemId = taskId,
+                    UserId = taskItem.AssigneeId,
+                    AssignedAt = DateTime.UtcNow,  // Timestamp for when the assignment happened
+                    TaskItem = existingTask,
+                    User = assignee
+                };
+
+                // Add the new TaskAssignment
+                _context.TaskAssignments.Add(newTaskAssignment);
             }
 
-            // Update the task
+            // Now update the task itself
             _context.Tasks.Update(existingTask);
             await _context.SaveChangesAsync();
 
             return existingTask;
         }
+
+
+
+
+
 
         public async Task<bool> DeleteTaskAsync(int taskId)
         {
@@ -172,55 +181,51 @@ namespace TaskManagementSystem.Services
                 .ToListAsync();
         }
 
-        public async Task<TaskAssignment?> AssignUserToTaskAsync(int taskId, int userId)
+        public async Task<TaskAssignment?> AssignOrReassignUserToTaskAsync(int taskItemId, int userId)
         {
-            var task = await _context.Tasks.FindAsync(taskId);
+            // Find the task by taskId
+            var task = await _context.Tasks.FindAsync(taskItemId);
+
+            // Find the user by userId
             var user = await _context.Users.FindAsync(userId);
 
-            if (task == null || user == null) return null;
+            if (task == null || user == null)
+                return null;  // If task or user doesn't exist, return null
 
-            var taskAssignment = new TaskAssignment
+            // **Update the task's AssigneeId and UpdatedAt before saving**
+            task.AssigneeId = userId;  // Update the AssigneeId to the new user
+            task.UpdatedAt = DateTime.UtcNow;  // Set the UpdatedAt field to now
+
+            // Save changes for the task (this will update the AssigneeId and UpdatedAt)
+            _context.Tasks.Update(task);
+
+            // **Always create a new TaskAssignment to allow history of assignments**
+            var newAssignment = new TaskAssignment
             {
-                TaskItemId = taskId,
+                TaskItemId = taskItemId,
                 UserId = userId,
-                TaskItem = task,  // Set the required navigation property TaskItem
-                User = user,      // Set the required navigation property User
-                AssignedAt = DateTime.Now
+                AssignedAt = DateTime.UtcNow,  // Timestamp for when the assignment happened
+                TaskItem = task,
+                User = user
+                // No need to set Id; it will be auto-generated by the database
             };
 
-            _context.TaskAssignments.Add(taskAssignment);
+            // Add the new TaskAssignment to the context (this will prevent primary key violation)
+            _context.TaskAssignments.Add(newAssignment);
+
+            // Save changes to the database for both Task and TaskAssignment
             await _context.SaveChangesAsync();
 
-            return taskAssignment;
+            // Return the newly created TaskAssignment
+            return newAssignment;
         }
 
-        public async Task<TaskItem> ReassignTaskAsync(int taskItemId, int newUserId)
-        {
-            var taskItem = await _context.Tasks
-                .FirstOrDefaultAsync(t => t.TaskItemId == taskItemId);
 
-            if (taskItem == null)
-            {
-                throw new KeyNotFoundException("Task not found.");
-            }
 
-            // Fetch the new assignee user
-            var newAssignee = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserId == newUserId);
 
-            if (newAssignee == null)
-            {
-                throw new InvalidOperationException("User not found.");
-            }
 
-            // Reassign the task to the new user
-            taskItem.AssigneeId = newUserId;
-            taskItem.UpdatedAt = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
 
-            return taskItem;
-        }
 
         public async Task<Workflow?> GetWorkflowByIdAsync(int workflowId)
         {

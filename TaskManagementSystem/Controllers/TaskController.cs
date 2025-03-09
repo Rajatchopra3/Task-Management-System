@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;  // Import Authorize attribute
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using TaskManagementSystem.Models;
 using TaskManagementSystem.Services;
 
@@ -41,6 +43,7 @@ namespace TaskManagementSystem.Controllers
         // POST: api/task - Accessible to all authenticated users
         [HttpPost]
         [Authorize]  // Ensure the user is authenticated
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<TaskItem>> CreateTask(TaskItem taskItem)
         {
             // Optional: Validate WorkflowId if it's provided
@@ -57,30 +60,46 @@ namespace TaskManagementSystem.Controllers
             var createdTask = await _taskService.CreateTaskAsync(taskItem);
             return CreatedAtAction(nameof(GetTaskById), new { id = createdTask.TaskItemId }, createdTask);
         }
-
-        // PUT: api/task/{id} - Accessible to all authenticated users
         [HttpPut("{id}")]
-        [Authorize]  // Ensure the user is authenticated
+        [Authorize]
         public async Task<ActionResult<TaskItem>> UpdateTask(int id, TaskItem taskItem)
         {
-            // Optional: Validate WorkflowId if it's provided
-            if (taskItem.WorkflowId.HasValue)
+            try
             {
-                // Check if the WorkflowId exists in the database
-                var workflow = await _taskService.GetWorkflowByIdAsync(taskItem.WorkflowId.Value);
-                if (workflow == null)
-                {
-                    return BadRequest("Invalid Workflow ID.");
-                }
-            }
+                // Get the current user's ID from the claims (from JWT)
+                var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier); // Extracts user ID
 
-            var updatedTask = await _taskService.UpdateTaskAsync(id, taskItem);
-            if (updatedTask == null)
-            {
-                return NotFound();
+                if (string.IsNullOrEmpty(currentUserIdClaim))
+                {
+                    return BadRequest("User ID is missing from the claims.");
+                }
+
+                // Parse the user ID safely
+                if (!int.TryParse(currentUserIdClaim, out int currentUserId))
+                {
+                    return BadRequest("Invalid user ID.");
+                }
+
+                var isAdmin = User.IsInRole("Admin");
+
+                // Call the service to update the task with user info (currentUserId and isAdmin)
+                var updatedTask = await _taskService.UpdateTaskAsync(id, taskItem, currentUserId, isAdmin);
+
+                if (updatedTask == null)
+                {
+                    return NotFound(new { message = "Task not found or you are not allowed to update it." });
+                }
+
+                return Ok(updatedTask);  // Return the updated task if everything was successful
             }
-            return Ok(updatedTask);
+            catch (Exception ex)
+            {
+                // Handle unexpected errors (e.g., database issues)
+                return StatusCode(500, new { message = "An unexpected error occurred.", error = ex.Message });
+            }
         }
+
+
 
         // DELETE: api/task/{id} - Only Admins can delete tasks
         [HttpDelete("{id}")]
@@ -104,33 +123,25 @@ namespace TaskManagementSystem.Controllers
             return Ok(assignments);
         }
 
-        // POST: api/task/{taskItemId}/assign - Only Admins can assign tasks
+        // POST: api/task/{taskItemId}/assign - Admins can assign or reassign tasks
         [HttpPost("{taskItemId}/assign")]
-        [Authorize(Roles = "Admin")]  // Only Admin role users can assign tasks
-        public async Task<ActionResult<TaskAssignment>> AssignUserToTask(int taskItemId, [FromBody] int userId)
+        [Authorize(Roles = "Admin")]  // Only Admin role users can assign or reassign tasks
+        public async Task<ActionResult<TaskAssignment>> AssignOrReassignUserToTask(int taskItemId, [FromBody] AssignUserRequest request)
         {
-            var taskAssignment = await _taskService.AssignUserToTaskAsync(taskItemId, userId);
+            if (request == null || request.UserId <= 0)
+            {
+                return BadRequest("Invalid UserId.");
+            }
+
+            var taskAssignment = await _taskService.AssignOrReassignUserToTaskAsync(taskItemId, request.UserId);
+
+            if (taskAssignment == null)
+            {
+                return NotFound("Task or User not found.");
+            }
+
             return Ok(taskAssignment);
         }
 
-        // PUT: api/task/reassign/{taskItemId} - Only Admins can reassign tasks
-        [HttpPut("reassign/{taskItemId}")]
-        [Authorize(Roles = "Admin")]  // Only Admin role users can reassign tasks
-        public async Task<ActionResult<TaskItem>> ReassignTask(int taskItemId, [FromBody] int newUserId)
-        {
-            try
-            {
-                var taskItem = await _taskService.ReassignTaskAsync(taskItemId, newUserId);
-                return Ok(taskItem);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound("Task not found.");
-            }
-            catch (InvalidOperationException)
-            {
-                return BadRequest("User not found.");
-            }
-        }
     }
 }

@@ -1,12 +1,16 @@
-﻿namespace TaskManagementSystem.Models
-{
-    public class TaskAssignment
-    {
-        public int TaskItemId { get; set; }   // Foreign Key to TaskItem (formerly Task)
-        public int UserId { get; set; }   // Foreign Key to User
-        public DateTime AssignedAt { get; set; }
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using TaskManagementSystem.Models;
 
-        public required TaskItem TaskItem { get; set; }   // Navigation property, updated to TaskItem
-        public required User User { get; set; }   // Navigation property
-    }
+public class TaskAssignment
+{
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }   // New surrogate primary key
+    public int TaskItemId { get; set; }
+    public int UserId { get; set; }
+    public DateTime AssignedAt { get; set; }
+
+    public required TaskItem TaskItem { get; set; }
+    public required User User { get; set; }
 }
