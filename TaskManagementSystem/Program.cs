@@ -3,22 +3,55 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TaskManagementSystem.Models;
 using TaskManagementSystem.Services;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
+
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin() // Allow requests from any origin (replace with specific origin in production)
+              .AllowAnyHeader()  // Allow any header
+              .AllowAnyMethod(); // Allow any HTTP method
+    });
+});
 
 // Add services to the container.
 builder.Services.AddControllers();
 
 // Add Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Please enter a valid JWT token",
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+
+    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+});
+
 builder.Services.AddScoped<IWorkflowService, WorkflowService>();
-
-
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IUserService, UserService>();
-
 
 // Registering DbContext with SQL Server connection string from appsettings.json
 builder.Services.AddDbContext<TaskManagementContext>(options =>
@@ -51,7 +84,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Add Authorization policies
 builder.Services.AddAuthorization(options =>
 {
-    // Define a policy for Admin role
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
 
@@ -66,9 +98,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Use CORS before authentication middleware
+app.UseCors("AllowAll"); // Allow all origins, headers, and methods for the API
+
 // Add authentication and authorization middleware
-app.UseAuthentication();  // This ensures authentication middleware is used
-app.UseAuthorization();   // This ensures authorization middleware is used
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

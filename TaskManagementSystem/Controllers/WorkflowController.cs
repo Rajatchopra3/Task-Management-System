@@ -21,6 +21,7 @@ namespace TaskManagementSystem.Controllers
         [Authorize(Roles = "Admin")] // Only Admin can create workflows
         public async Task<ActionResult<Workflow>> CreateWorkflow([FromBody] Workflow workflow)
         {
+            Console.WriteLine("CreateWorkflow method has been reached.");
             if (workflow == null)
             {
                 return BadRequest("Workflow data is required.");
@@ -51,19 +52,59 @@ namespace TaskManagementSystem.Controllers
             }
             return Ok(workflow);
         }
-
-        // POST: api/workflows/{workflowId}/tasks
-        [HttpPost("{workflowId}/tasks")]
+        // POST: api/workflows/{workflowId}/tasks/{taskItemId}
+        [HttpPost("{workflowId}/tasks/{taskItemId}")]
         [Authorize(Roles = "Admin")] // Only Admin can add tasks to workflows
-        public async Task<ActionResult> AddTaskToWorkflow(int workflowId, [FromBody] TaskItem taskItem)
+        public async Task<ActionResult> AddTaskToWorkflow(int workflowId, int taskItemId)
         {
-            if (taskItem == null)
+            if (taskItemId <= 0)
             {
-                return BadRequest("Task data is required.");
+                return BadRequest("Invalid TaskItem ID.");
             }
 
-            await _workflowService.AddTaskToWorkflowAsync(workflowId, taskItem);
-            return NoContent();  // Successful request, but no content to return
+            try
+            {
+                await _workflowService.AddTaskToWorkflowAsync(workflowId, taskItemId);
+                return NoContent();  // Successful request, no content to return
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);  // Return NotFound if workflow or task is not found
+            }
         }
+
+        // DELETE: api/workflows/{workflowId}
+        [HttpDelete("{workflowId}")]
+        [Authorize(Roles = "Admin")] // Only Admin can delete workflows
+        public async Task<ActionResult> DeleteWorkflow(int workflowId)
+        {
+            try
+            {
+                await _workflowService.DeleteWorkflowAsync(workflowId);
+                return NoContent();  // Successful deletion, no content to return
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);  // Return NotFound if the workflow is not found
+            }
+        }
+
+        // DELETE: api/workflows/{workflowId}/tasks/{taskItemId}
+        [HttpDelete("{workflowId}/tasks/{taskItemId}")]
+        [Authorize(Roles = "Admin")] // Only Admin can delete tasks from workflows
+        public async Task<ActionResult> DeleteTaskFromWorkflow(int workflowId, int taskItemId)
+        {
+            try
+            {
+                await _workflowService.DeleteTaskFromWorkflowAsync(workflowId, taskItemId);
+                return NoContent();  // Successful deletion, no content to return
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);  // Return NotFound if task or workflow is not found
+            }
+        }
+
+
     }
 }

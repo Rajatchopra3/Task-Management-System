@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "D:\\TaskManagementSystem\\TaskManagementSystem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\taskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\taskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\controllers\\workflowcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:controllers\\workflowcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\iworkflowservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\iworkflowservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\workflowservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\workflowservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\models\\workflow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:models\\workflow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\models\\taskitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,20 +31,24 @@
       "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:controllers\\taskcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\migrations\\20250309052617_fixprimarykeyontaskassignments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:migrations\\20250309052617_fixprimarykeyontaskassignments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\itaskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\itaskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\models\\workflow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:models\\workflow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\taskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\taskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\migrations\\20250309052617_fixprimarykeyontaskassignments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:migrations\\20250309052617_fixprimarykeyontaskassignments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\itaskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\itaskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\models\\taskassignment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,28 +59,8 @@
       "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:models\\assignuserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\controllers\\workflowcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:controllers\\workflowcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\workflowservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\workflowservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\taskmanagementsystem.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
       "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:taskmanagementsystem.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\iworkflowservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\iworkflowservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|solutionrelative:services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{96729288-A427-4FB2-8667-F55030F04403}|TaskManagementSystem.csproj|d:\\taskmanagementsystem\\taskmanagementsystem\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -98,7 +98,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -106,33 +106,46 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "WorkflowService.cs",
-              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\WorkflowService.cs",
-              "RelativeDocumentMoniker": "Services\\WorkflowService.cs",
-              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\WorkflowService.cs",
-              "RelativeToolTip": "Services\\WorkflowService.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAACAAAAAJAAAAAAAAAA==",
+              "DocumentIndex": 6,
+              "Title": "TaskController.cs",
+              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\TaskController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TaskController.cs",
+              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\TaskController.cs",
+              "RelativeToolTip": "Controllers\\TaskController.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAAABQAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-08T10:06:19.829Z",
+              "WhenOpened": "2025-03-07T18:09:12.363Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAwwFcAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T12:40:08.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "WorkflowController.cs",
               "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\WorkflowController.cs",
               "RelativeDocumentMoniker": "Controllers\\WorkflowController.cs",
               "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\WorkflowController.cs",
               "RelativeToolTip": "Controllers\\WorkflowController.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAiwEUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAiwGkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-08T10:06:52.911Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "Workflow.cs",
               "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\Workflow.cs",
               "RelativeDocumentMoniker": "Models\\Workflow.cs",
@@ -145,124 +158,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TaskService.cs",
-              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\TaskService.cs",
-              "RelativeDocumentMoniker": "Services\\TaskService.cs",
-              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\TaskService.cs",
-              "RelativeToolTip": "Services\\TaskService.cs",
-              "ViewState": "AgIAAHAAAAAAAAAAAAAiwIoAAAASAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "WorkflowService.cs",
+              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\WorkflowService.cs",
+              "RelativeDocumentMoniker": "Services\\WorkflowService.cs",
+              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\WorkflowService.cs",
+              "RelativeToolTip": "Services\\WorkflowService.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAiwHEAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T18:08:41.384Z",
+              "WhenOpened": "2025-03-08T10:06:19.829Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "TaskItem.cs",
               "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\TaskItem.cs",
               "RelativeDocumentMoniker": "Models\\TaskItem.cs",
               "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\TaskItem.cs",
               "RelativeToolTip": "Models\\TaskItem.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAAABcAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-07T12:43:42.777Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
-              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Migrations\\20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
-              "RelativeDocumentMoniker": "Migrations\\20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
-              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Migrations\\20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
-              "RelativeToolTip": "Migrations\\20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAiwBIAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-09T05:26:28.068Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "TaskController.cs",
-              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\TaskController.cs",
-              "RelativeDocumentMoniker": "Controllers\\TaskController.cs",
-              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\TaskController.cs",
-              "RelativeToolTip": "Controllers\\TaskController.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T18:09:12.363Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
-              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAAAEYAAABTAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T14:27:30.381Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ITaskService.cs",
-              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\ITaskService.cs",
-              "RelativeDocumentMoniker": "Services\\ITaskService.cs",
-              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\ITaskService.cs",
-              "RelativeToolTip": "Services\\ITaskService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T18:08:14.357Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAAAEQAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T12:40:08.644Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "TaskAssignment.cs",
-              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\TaskAssignment.cs",
-              "RelativeDocumentMoniker": "Models\\TaskAssignment.cs",
-              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\TaskAssignment.cs",
-              "RelativeToolTip": "Models\\TaskAssignment.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T12:44:35.168Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "AssignUserRequest.cs",
-              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\AssignUserRequest.cs",
-              "RelativeDocumentMoniker": "Models\\AssignUserRequest.cs",
-              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\AssignUserRequest.cs",
-              "RelativeToolTip": "Models\\AssignUserRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-09T03:46:11.864Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
               "Title": "IUserService.cs",
               "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\IUserService.cs",
               "RelativeDocumentMoniker": "Services\\IUserService.cs",
@@ -275,20 +197,92 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 1,
               "Title": "IWorkflowService.cs",
               "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\IWorkflowService.cs",
               "RelativeDocumentMoniker": "Services\\IWorkflowService.cs",
               "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\IWorkflowService.cs",
               "RelativeToolTip": "Services\\IWorkflowService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-08T10:05:49.857Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
+              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Controllers\\AuthController.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAAAEYAAABTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T14:27:30.381Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
+              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Migrations\\20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
+              "RelativeDocumentMoniker": "Migrations\\20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
+              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Migrations\\20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
+              "RelativeToolTip": "Migrations\\20250309052617_FixPrimaryKeyOnTaskAssignments.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAiwBIAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-09T05:26:28.068Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "TaskService.cs",
+              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\TaskService.cs",
+              "RelativeDocumentMoniker": "Services\\TaskService.cs",
+              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\TaskService.cs",
+              "RelativeToolTip": "Services\\TaskService.cs",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAiwIoAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T18:08:41.384Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ITaskService.cs",
+              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\ITaskService.cs",
+              "RelativeDocumentMoniker": "Services\\ITaskService.cs",
+              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Services\\ITaskService.cs",
+              "RelativeToolTip": "Services\\ITaskService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T18:08:14.357Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 12,
+              "Title": "TaskAssignment.cs",
+              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\TaskAssignment.cs",
+              "RelativeDocumentMoniker": "Models\\TaskAssignment.cs",
+              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\TaskAssignment.cs",
+              "RelativeToolTip": "Models\\TaskAssignment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T12:44:35.168Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AssignUserRequest.cs",
+              "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\AssignUserRequest.cs",
+              "RelativeDocumentMoniker": "Models\\AssignUserRequest.cs",
+              "ToolTip": "D:\\TaskManagementSystem\\TaskManagementSystem\\Models\\AssignUserRequest.cs",
+              "RelativeToolTip": "Models\\AssignUserRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-09T03:46:11.864Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "TaskManagementSystem.http",
               "DocumentMoniker": "D:\\TaskManagementSystem\\TaskManagementSystem\\TaskManagementSystem.http",
               "RelativeDocumentMoniker": "TaskManagementSystem.http",
@@ -296,8 +290,7 @@
               "RelativeToolTip": "TaskManagementSystem.http",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-03-08T14:48:38.655Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-08T14:48:38.655Z"
             },
             {
               "$type": "Document",
@@ -309,8 +302,7 @@
               "RelativeToolTip": "Services\\UserService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-08T08:17:35.204Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-08T08:17:35.204Z"
             },
             {
               "$type": "Document",
@@ -322,8 +314,7 @@
               "RelativeToolTip": "Models\\TaskManagementContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T12:33:28.392Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-07T12:33:28.392Z"
             },
             {
               "$type": "Document",
@@ -335,8 +326,7 @@
               "RelativeToolTip": "Migrations\\20250308095001_InitialCreate.cs",
               "ViewState": "AgIAAH8AAAAAAAAAAAAiwKUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-08T09:55:53.025Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-08T09:55:53.025Z"
             },
             {
               "$type": "Document",
@@ -348,8 +338,7 @@
               "RelativeToolTip": "Models\\RegisterRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-08T08:08:47.766Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-08T08:08:47.766Z"
             },
             {
               "$type": "Document",
@@ -361,8 +350,7 @@
               "RelativeToolTip": "Models\\User.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T12:43:17.437Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-07T12:43:17.437Z"
             },
             {
               "$type": "Document",
