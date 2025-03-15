@@ -26,5 +26,8 @@ namespace TaskManagementSystem.Models
         // Navigation properties
         public User? Assignee { get; set; }  // Navigation property to User
         public Workflow? Workflow { get; set; }  // Navigation property to Workflow
+
+        public ICollection<TaskDependency> Dependencies { get; set; } = new List<TaskDependency>();  // Tasks that depend on this task
+        public ICollection<TaskDependency> DependentOn { get; set; } = new List<TaskDependency>();  // Tasks that this task depends on
     }
 }

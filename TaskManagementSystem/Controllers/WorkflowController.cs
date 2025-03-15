@@ -52,10 +52,12 @@ namespace TaskManagementSystem.Controllers
             }
             return Ok(workflow);
         }
+
         // POST: api/workflows/{workflowId}/tasks/{taskItemId}
+        // POST: api/workflows/{workflowId}/tasks/{taskItemId}/dependency
         [HttpPost("{workflowId}/tasks/{taskItemId}")]
         [Authorize(Roles = "Admin")] // Only Admin can add tasks to workflows
-        public async Task<ActionResult> AddTaskToWorkflow(int workflowId, int taskItemId)
+        public async Task<ActionResult> AddTaskToWorkflow(int workflowId, int taskItemId, [FromQuery] int? dependentTaskId = null)
         {
             if (taskItemId <= 0)
             {
@@ -64,7 +66,8 @@ namespace TaskManagementSystem.Controllers
 
             try
             {
-                await _workflowService.AddTaskToWorkflowAsync(workflowId, taskItemId);
+                // If dependentTaskId is provided, include it while adding the task to the workflow
+                await _workflowService.AddTaskToWorkflowAsync(workflowId, taskItemId, dependentTaskId);
                 return NoContent();  // Successful request, no content to return
             }
             catch (InvalidOperationException ex)
@@ -72,6 +75,56 @@ namespace TaskManagementSystem.Controllers
                 return NotFound(ex.Message);  // Return NotFound if workflow or task is not found
             }
         }
+
+        // POST: api/workflows/{workflowId}/tasks/{oldTaskItemId}/replace/{newTaskItemId}
+        [HttpPost("{workflowId}/tasks/{oldTaskItemId}/replace/{newTaskItemId}")]
+        [Authorize(Roles = "Admin")] // Only Admin can replace tasks in workflows
+        public async Task<ActionResult> ReplaceTaskInWorkflow(int workflowId, int oldTaskItemId, int newTaskItemId)
+        {
+            if (oldTaskItemId <= 0 || newTaskItemId <= 0)
+            {
+                return BadRequest("Invalid TaskItem IDs.");
+            }
+
+            try
+            {
+                // Replacing the task in the workflow
+                await _workflowService.ReplaceTaskInWorkflowAsync(workflowId, oldTaskItemId, newTaskItemId);
+                return NoContent();  // Successful request, no content to return
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);  // Return NotFound if workflow or task is not found
+            }
+        }
+
+        // POST: api/workflows/{workflowId}/tasks/{taskItemId}/reassign-dependents
+        [HttpPost("{workflowId}/tasks/{taskItemId}/reassign-dependents")]
+        [Authorize(Roles = "Admin")] // Only Admin can reassign dependent tasks
+        public async Task<ActionResult> ReassignDependentTasks(int workflowId, int taskItemId, [FromBody] List<int> newDependencyOrder)
+        {
+            if (taskItemId <= 0)
+            {
+                return BadRequest("Invalid TaskItem ID.");
+            }
+
+            if (newDependencyOrder == null || newDependencyOrder.Count == 0)
+            {
+                return BadRequest("New dependency order is required.");
+            }
+
+            try
+            {
+                // Reassigning dependent tasks for the specified task
+                await _workflowService.ReassignDependentTasksAsync(workflowId, taskItemId, newDependencyOrder);
+                return NoContent();  // Successful request, no content to return
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);  // Return NotFound if task or workflow is not found
+            }
+        }
+
 
         // DELETE: api/workflows/{workflowId}
         [HttpDelete("{workflowId}")]
@@ -104,7 +157,5 @@ namespace TaskManagementSystem.Controllers
                 return NotFound(ex.Message);  // Return NotFound if task or workflow is not found
             }
         }
-
-
     }
 }
