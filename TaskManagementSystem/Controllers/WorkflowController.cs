@@ -142,20 +142,6 @@ namespace TaskManagementSystem.Controllers
             }
         }
 
-        // DELETE: api/workflows/{workflowId}/tasks/{taskItemId}
-        [HttpDelete("{workflowId}/tasks/{taskItemId}")]
-        [Authorize(Roles = "Admin")] // Only Admin can delete tasks from workflows
-        public async Task<ActionResult> DeleteTaskFromWorkflow(int workflowId, int taskItemId)
-        {
-            try
-            {
-                await _workflowService.DeleteTaskFromWorkflowAsync(workflowId, taskItemId);
-                return NoContent();  // Successful deletion, no content to return
-            }
-            catch (InvalidOperationException ex)
-            {
-                return NotFound(ex.Message);  // Return NotFound if task or workflow is not found
-            }
-        }
+       
     }
 }

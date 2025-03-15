@@ -28,6 +28,6 @@ namespace TaskManagementSystem.Services
         Task DeleteWorkflowAsync(int workflowId);
 
         // Delete a task from a workflow using taskItemId
-        Task DeleteTaskFromWorkflowAsync(int workflowId, int taskItemId);
+      
     }
 }

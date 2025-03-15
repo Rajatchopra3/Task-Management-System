@@ -311,71 +311,7 @@ namespace TaskManagementSystem.Services
         }
 
 
-        public async Task DeleteTaskFromWorkflowAsync(int workflowId, int taskItemId)
-        {
-            // Fetch the task by its TaskItemId
-            var taskItem = await _context.Tasks
-                .FirstOrDefaultAsync(t => t.TaskItemId == taskItemId && t.WorkflowId == workflowId);
-
-            if (taskItem == null)
-            {
-                throw new InvalidOperationException("Task not found in this workflow.");
-            }
-
-            // Fetch all tasks that depend on this task (those that have this task as their dependent task)
-            var dependentTasks = await _context.TaskDependencies
-                .Where(td => td.DependentTaskItemId == taskItemId)
-                .ToListAsync();
-
-            // Create a list to track tasks to be removed from the workflow
-            var tasksToRemove = new List<TaskItem>();
-
-            // Prevent orphaned dependent tasks by checking the dependencies
-            foreach (var dependency in dependentTasks)
-            {
-                var dependentTask = await _context.Tasks
-                    .FirstOrDefaultAsync(t => t.TaskItemId == dependency.TaskItemId);
-
-                if (dependentTask != null)
-                {
-                    // Check if the dependent task depends on another task
-                    var furtherDependencies = await _context.TaskDependencies
-                        .Where(td => td.TaskItemId == dependentTask.TaskItemId)
-                        .ToListAsync();
-
-                    if (furtherDependencies.Any())
-                    {
-                        // If Task 15 (dependent on Task 14) has further dependencies, 
-                        // we may need to reassign it (depending on business rules)
-                        // For now, let's assume we remove it from the workflow.
-                        dependentTask.WorkflowId = null;
-                        _context.Tasks.Update(dependentTask);
-                    }
-                    else
-                    {
-                        // If there are no further dependencies, we can safely remove it
-                        tasksToRemove.Add(dependentTask);
-                    }
-                }
-
-                // Remove the dependency entry from the TaskDependencies table
-                _context.TaskDependencies.Remove(dependency);
-            }
-
-            // Now, remove the task itself from the workflow (disassociate)
-            taskItem.WorkflowId = null;
-            _context.Tasks.Update(taskItem);
-
-            // Remove tasks that were marked for removal (e.g., Task 15 and Task 16)
-            foreach (var task in tasksToRemove)
-            {
-                task.WorkflowId = null; // Disassociate from workflow
-                _context.Tasks.Update(task);
-            }
-
-            // Save changes to the database
-            await _context.SaveChangesAsync();
-        }
+       
 
 
 
