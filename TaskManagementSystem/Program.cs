@@ -17,7 +17,14 @@ builder.Services.AddCors(options =>
 });
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+.AddJsonOptions(options =>
+{
+    // Enable reference handling to prevent cycles in JSON serialization
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+});
+
+
 
 // Add Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();

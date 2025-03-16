@@ -82,16 +82,16 @@ namespace TaskManagementSystem.Services
                 }
 
                 // Check for cyclic dependencies (task should not depend on itself or any task that depends on it)
-                if (await HasCyclicDependency(taskItemId, dependentTaskId.Value))
+                if (await HasCyclicDependency(dependentTaskId.Value, taskItemId))  // Reverse the order here
                 {
                     throw new InvalidOperationException("Cyclic dependency detected.");
                 }
 
-                // Add the dependency (Task -> Dependent Task)
+                // Add the dependency (Task that depends -> Task being depended on)
                 var taskDependency = new TaskDependency
                 {
-                    TaskItemId = taskItemId,
-                    DependentTaskItemId = dependentTaskId.Value
+                    TaskItemId = dependentTaskId.Value,  // This task is depended on
+                    DependentTaskItemId = taskItemId     // This task depends on the other
                 };
                 _context.TaskDependencies.Add(taskDependency);
             }
@@ -156,7 +156,7 @@ namespace TaskManagementSystem.Services
             // Check if the new task is part of the workflow, if not, add it
             if (newTask.WorkflowId == null)
             {
-                await AddTaskToWorkflowAsync(workflowId, newTaskItemId);  // Call the method to add the new task to the workflow
+                await AddTaskToWorkflowAsync(workflowId, newTaskItemId);  // This method adds the new task to the workflow
             }
 
             // Reassign dependencies from old task to new task
@@ -168,11 +168,11 @@ namespace TaskManagementSystem.Services
             {
                 if (dependency.TaskItemId == oldTaskItemId)
                 {
-                    dependency.TaskItemId = newTaskItemId;
+                    dependency.TaskItemId = newTaskItemId;  // Reassign the dependent task
                 }
                 else
                 {
-                    dependency.DependentTaskItemId = newTaskItemId;
+                    dependency.DependentTaskItemId = newTaskItemId;  // Reassign the task being depended on
                 }
             }
 
@@ -182,6 +182,7 @@ namespace TaskManagementSystem.Services
             // Save changes
             await _context.SaveChangesAsync();
         }
+
 
 
         // Reassign dependent tasks if a task is deleted
@@ -264,7 +265,7 @@ namespace TaskManagementSystem.Services
         // Delete a workflow by ID
         public async Task DeleteWorkflowAsync(int workflowId)
         {
-            // Fetch the workflow by its ID, including tasks
+            // Fetch the workflow by its ID, including tasks and task dependencies
             var workflow = await _context.Workflows
                 .Include(w => w.Tasks)  // Include tasks in the workflow
                 .FirstOrDefaultAsync(w => w.WorkflowId == workflowId);
@@ -274,33 +275,19 @@ namespace TaskManagementSystem.Services
                 throw new InvalidOperationException("Workflow not found.");
             }
 
-            // Loop through each task in the workflow
+            // Fetch all dependencies related to tasks in the workflow (both incoming and outgoing)
+            var taskDependencies = await _context.TaskDependencies
+                .Where(td => workflow.Tasks.Select(t => t.TaskItemId).Contains(td.TaskItemId) ||
+                            workflow.Tasks.Select(t => t.TaskItemId).Contains(td.DependentTaskItemId))
+                .ToListAsync();
+
+            // Remove all dependencies related to tasks in the workflow
+            _context.TaskDependencies.RemoveRange(taskDependencies);
+
+            // Disassociate each task from the workflow
             foreach (var task in workflow.Tasks)
             {
-                // Fetch the dependencies where this task is the dependent task (TaskItemId)
-                var dependentTasks = await _context.TaskDependencies
-                    .Where(td => td.DependentTaskItemId == task.TaskItemId)
-                    .ToListAsync();
-
-                // Remove the dependencies where this task is the dependent task
-                foreach (var dependency in dependentTasks)
-                {
-                    _context.TaskDependencies.Remove(dependency);
-                }
-
-                // Fetch the dependencies where this task is the task that depends on others (TaskItemId)
-                var taskDependencies = await _context.TaskDependencies
-                    .Where(td => td.TaskItemId == task.TaskItemId)
-                    .ToListAsync();
-
-                // Remove the dependencies where this task is the task that depends on others
-                foreach (var dependency in taskDependencies)
-                {
-                    _context.TaskDependencies.Remove(dependency);
-                }
-
-                // Disassociate each task from the workflow by setting WorkflowId to null
-                task.WorkflowId = null;
+                task.WorkflowId = null;  // Remove the task from the workflow
             }
 
             // Now remove the workflow itself
@@ -311,7 +298,7 @@ namespace TaskManagementSystem.Services
         }
 
 
-       
+
 
 
 

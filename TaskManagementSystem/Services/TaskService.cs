@@ -1,15 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManagementSystem.Models;
+using Microsoft.Extensions.Logging;
 
 namespace TaskManagementSystem.Services
 {
     public class TaskService : ITaskService
     {
         private readonly TaskManagementContext _context;
+        private readonly ILogger _logger;
+        public TaskService(ILogger<TaskService> logger, TaskManagementContext context)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
 
         public TaskService(TaskManagementContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            // Logger can be injected by the DI container automatically if needed.
+            _logger = null!;
         }
 
         public async Task<IEnumerable<TaskItem>> GetAllTasksAsync()
@@ -97,12 +106,27 @@ namespace TaskManagementSystem.Services
         }
 
 
-
         public async Task<TaskItem?> UpdateTaskAsync(int taskId, TaskItem taskItem, int currentUserId, bool isAdmin)
         {
-            var existingTask = await _context.Tasks.FindAsync(taskId);
+            var existingTask = await _context.Tasks
+                .Include(t => t.DependentOn) // Include dependent tasks to check their status
+                .FirstOrDefaultAsync(t => t.TaskItemId == taskId);
+
             if (existingTask == null)
                 return null;  // Return null if task doesn't exist
+
+            // Prevent status update if task has dependencies and they are not completed
+            if (taskItem.Status != existingTask.Status)
+            {
+                var canUpdateStatus = await CanUpdateTaskStatusAsync(taskId);  // Check if dependent tasks are completed
+
+                if (!canUpdateStatus)
+                {
+                    // Log the error before throwing
+                    _logger.LogError("Attempt to update task status failed. TaskId: {TaskId} - Cannot update task status because dependent tasks are not completed.", taskId);
+                    throw new InvalidOperationException("Cannot update task status because dependent tasks are not completed.");
+                }
+            }
 
             // Check if the current user can change the WorkflowId
             if (taskItem.WorkflowId.HasValue)
@@ -116,8 +140,10 @@ namespace TaskManagementSystem.Services
                 var workflow = await _context.Workflows.FindAsync(taskItem.WorkflowId.Value);
                 if (workflow == null)
                 {
+                    // Instead of logging a warning, throw an exception if the workflow doesn't exist
                     throw new ArgumentException("Invalid Workflow ID.");
                 }
+
                 existingTask.Workflow = workflow;  // Update the Workflow if valid
             }
 
@@ -136,6 +162,7 @@ namespace TaskManagementSystem.Services
                 {
                     if (!isAdmin && existingTask.AssigneeId != currentUserId)
                     {
+                        _logger.LogWarning("User attempted to reassign task but is not the assignee or an admin. TaskId: {TaskId} - UserId: {UserId}", taskId, currentUserId);
                         return null; // Prevent updating if the user is not the assignee or an admin
                     }
 
@@ -143,6 +170,7 @@ namespace TaskManagementSystem.Services
                     var assignee = await _context.Users.FindAsync(taskItem.AssigneeId);
                     if (assignee == null)
                     {
+                        _logger.LogError("Assignee not found. TaskId: {TaskId} - AssigneeId: {AssigneeId}", taskId, taskItem.AssigneeId);
                         throw new KeyNotFoundException("Assignee not found.");
                     }
 
@@ -166,6 +194,7 @@ namespace TaskManagementSystem.Services
             else
             {
                 // If the task has a workflow, the assignee cannot be changed by anyone except admin
+                _logger.LogWarning("Assignee change is not allowed because the task is part of a workflow. TaskId: {TaskId} - UserId: {UserId}", taskId, currentUserId);
                 return null; // Prevent assignee change if it's part of a workflow and the user is not an admin
             }
 
@@ -176,7 +205,34 @@ namespace TaskManagementSystem.Services
             return existingTask;
         }
 
+        // Helper method to check if a task's dependent tasks are completed
+        private async Task<bool> CanUpdateTaskStatusAsync(int taskItemId)
+        {
+            // Query TaskDependencies to find tasks that the current task depends on (TaskItemId is the current task)
+            var taskDependencies = await _context.TaskDependencies
+                .Where(td => td.TaskItemId == taskItemId) // Only fetch dependencies where the current task is the dependent task
+                .ToListAsync();
 
+            // Check each dependency in the task chain (tasks that the current task depends on)
+            foreach (var dependency in taskDependencies)
+            {
+                // This means the current task depends on another task (dependency.TaskItemId is the current task)
+                var parentTask = await _context.Tasks
+                    .FirstOrDefaultAsync(t => t.TaskItemId == dependency.DependentTaskItemId);
+
+                // If the parent task is not completed, prevent status update
+                if (parentTask != null && parentTask.Status != "Completed")
+                {
+                    // Log the reason why the status update is blocked
+                    _logger.LogWarning("Cannot update task status. TaskId: {TaskId} has a dependency on TaskId: {DependentTaskId}, but the dependent task is not completed. ParentTaskStatus: {ParentTaskStatus}",
+                        taskItemId, dependency.DependentTaskItemId, parentTask.Status);
+
+                    return false; // Block status update if any of the parent tasks are not completed
+                }
+            }
+
+            return true; // Allow status update if all dependent tasks are completed
+        }
 
 
 
@@ -186,7 +242,25 @@ namespace TaskManagementSystem.Services
             var task = await _context.Tasks.FindAsync(taskId);
             if (task == null) return false;
 
-            // Delete related TaskAssignments first
+            // Check if the task is part of a workflow
+            if (task.WorkflowId.HasValue)
+            {
+                // Fetch the task dependencies
+                var taskDependencies = await _context.TaskDependencies
+                    .Where(td => td.TaskItemId == taskId || td.DependentTaskItemId == taskId)
+                    .ToListAsync();
+
+                // If there are any dependencies, prevent deletion
+                if (taskDependencies.Any())
+                {
+                    throw new InvalidOperationException("Task cannot be deleted because it has dependencies.");
+                }
+
+                // If the task has no dependencies, remove it from the workflow
+                task.WorkflowId = null;
+            }
+
+            // Delete related TaskAssignments
             var taskAssignments = _context.TaskAssignments
                 .Where(ta => ta.TaskItemId == taskId);
 
@@ -198,6 +272,7 @@ namespace TaskManagementSystem.Services
 
             return true;
         }
+
 
 
         public async Task<IEnumerable<TaskAssignment>> GetTaskAssignmentsByTaskIdAsync(int taskId)

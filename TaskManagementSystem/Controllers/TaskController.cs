@@ -11,11 +11,14 @@ namespace TaskManagementSystem.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
+        private readonly ILogger<TaskController> _logger;
         private readonly ITaskService _taskService;
 
-        public TaskController(ITaskService taskService)
+        // Constructor where logger and task service are injected
+        public TaskController(ILogger<TaskController> logger, ITaskService taskService)
         {
-            _taskService = taskService;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // Injecting the logger
+            _taskService = taskService ?? throw new ArgumentNullException(nameof(taskService)); // Injecting the task service
         }
 
         // GET: api/task - Accessible to all authenticated users
@@ -60,12 +63,19 @@ namespace TaskManagementSystem.Controllers
             var createdTask = await _taskService.CreateTaskAsync(taskItem);
             return CreatedAtAction(nameof(GetTaskById), new { id = createdTask.TaskItemId }, createdTask);
         }
+
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult<TaskItem>> UpdateTask(int id, TaskItem taskItem)
         {
             try
             {
+                // Check if taskItem is null (validity check)
+                if (taskItem == null)
+                {
+                    return BadRequest("Task data is missing or invalid.");
+                }
+
                 // Get the current user's ID from the claims (from JWT)
                 var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier); // Extracts user ID
 
@@ -94,10 +104,14 @@ namespace TaskManagementSystem.Controllers
             }
             catch (Exception ex)
             {
+                // Log the exception details
+                _logger.LogError(ex, "An error occurred while updating task with ID {TaskId}.", id);
+
                 // Handle unexpected errors (e.g., database issues)
-                return StatusCode(500, new { message = "An unexpected error occurred.", error = ex.Message });
+                return StatusCode(500, new { message = "An unexpected error occurred.", error = "Internal server error." });
             }
         }
+
 
 
 
