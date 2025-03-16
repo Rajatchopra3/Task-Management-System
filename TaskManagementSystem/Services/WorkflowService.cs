@@ -6,10 +6,13 @@ namespace TaskManagementSystem.Services
     public class WorkflowService : IWorkflowService
     {
         private readonly TaskManagementContext _context;
+        private readonly ILogger<WorkflowService> _logger;
 
-        public WorkflowService(TaskManagementContext context)
+        // Constructor with both context and logger
+        public WorkflowService(TaskManagementContext context, ILogger<WorkflowService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // Create a new workflow
@@ -67,6 +70,7 @@ namespace TaskManagementSystem.Services
             }
 
             // Check for cyclic dependencies if a dependent task is specified
+            // Check for cyclic dependencies if a dependent task is specified
             if (dependentTaskId.HasValue)
             {
                 var dependentTask = await _context.Tasks.FindAsync(dependentTaskId.Value);
@@ -95,6 +99,7 @@ namespace TaskManagementSystem.Services
                 };
                 _context.TaskDependencies.Add(taskDependency);
             }
+
 
             // Associate the task with the workflow
             taskItem.WorkflowId = workflowId;
@@ -153,7 +158,7 @@ namespace TaskManagementSystem.Services
                 throw new InvalidOperationException("New task is already assigned to a different workflow.");
             }
 
-            // Check if the new task is part of the workflow, if not, add it
+            // If the new task is not part of the workflow, add it
             if (newTask.WorkflowId == null)
             {
                 await AddTaskToWorkflowAsync(workflowId, newTaskItemId);  // This method adds the new task to the workflow
@@ -182,6 +187,7 @@ namespace TaskManagementSystem.Services
             // Save changes
             await _context.SaveChangesAsync();
         }
+
 
 
 
