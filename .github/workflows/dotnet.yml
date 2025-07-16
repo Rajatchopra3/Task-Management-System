@@ -44,7 +44,7 @@ jobs:
           reportgenerator \
             -reports:**/TestResults/*/coverage.cobertura.xml \
             -targetdir:coverage-report \
-            -reporttypes:Html;XmlSummary
+            -reporttypes:"Html;XmlSummary"
 
       - name: Show coverage summary XML
         run: cat coverage-report/Summary.xml
@@ -52,21 +52,17 @@ jobs:
       - name: Enforce minimum coverage threshold
         run: |
           if ! command -v xmllint &> /dev/null; then sudo apt-get install -y libxml2-utils; fi
-
-          COVERAGE_RATE=$(xmllint --xpath "string(/CoverageReport/Summary/Linecoverage)" coverage-report/Summary.xml)
-
+          COVERAGE_RATE=$(xmllint --xpath "string(//CoverageReport/Summary/Linecoverage)" coverage-report/Summary.xml)
           if [ -z "$COVERAGE_RATE" ]; then
             echo "ERROR: Coverage rate not found in Summary.xml"
             exit 1
           fi
-
           echo "Raw coverage rate: $COVERAGE_RATE"
           COVERAGE_PERCENT=$(printf "%.0f" "$COVERAGE_RATE")
           echo "Total line coverage: $COVERAGE_PERCENT%"
 
           THRESHOLD=80
-          RESULT=$(echo "$COVERAGE_PERCENT >= $THRESHOLD" | bc)
-          if [ "$RESULT" -eq 1 ]; then
+          if [ "$COVERAGE_PERCENT" -ge "$THRESHOLD" ]; then
             echo "Coverage meets threshold ($THRESHOLD%)"
           else
             echo "Coverage below threshold ($THRESHOLD%). Failing build."
