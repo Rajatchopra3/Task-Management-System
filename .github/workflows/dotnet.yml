@@ -8,21 +8,21 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # use windows-latest if needed
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x  # replace with your .NET version if different
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore TaskManagementSystem/TaskManagementSystem.sln
 
-    - name: Build
-      run: dotnet build --no-restore
+      - name: Build
+        run: dotnet build TaskManagementSystem/TaskManagementSystem.sln --no-restore
 
-    - name: Test
-      run: dotnet test TaskManagementSystem.Tests/TaskManagementSystem.Tests.csproj --no-build --verbosity normal
+      - name: Test
+        run: dotnet test TaskManagementSystem.Tests/TaskManagementSystem.Tests.csproj --no-build --verbosity normal
