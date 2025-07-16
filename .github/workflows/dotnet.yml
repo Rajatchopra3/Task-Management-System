@@ -44,7 +44,7 @@ jobs:
           reportgenerator \
             -reports:**/TestResults/*/coverage.cobertura.xml \
             -targetdir:coverage-report \
-            -reporttypes:Html;XmlSummary
+            "-reporttypes:Html;XmlSummary"
 
       - name: Enforce minimum coverage threshold
         run: |
