@@ -25,15 +25,45 @@ jobs:
       - name: Build solution
         run: dotnet build TaskManagementSystem/TaskManagementSystem.sln --no-restore
 
-      - name: Run tests with coverage
-        run: dotnet test TaskManagementSystem.Tests/TaskManagementSystem.Tests.csproj --collect:"XPlat Code Coverage"
+      - name: Run tests with coverage (Cobertura format)
+        run: |
+          dotnet test TaskManagementSystem.Tests/TaskManagementSystem.Tests.csproj \
+            --collect:"XPlat Code Coverage" \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=cobertura
 
       - name: List TestResults folder contents
         run: |
           find . -type d -name "TestResults" -exec ls -l {} \; || echo "No TestResults folder found"
 
-      - name: Upload coverage files
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Generate HTML + summary coverage report
+        run: |
+          reportgenerator \
+            -reports:**/TestResults/*/coverage.cobertura.xml \
+            -targetdir:coverage-report \
+            -reporttypes:Html;Summary
+
+      - name: Enforce minimum coverage threshold
+        run: |
+          if ! command -v xmllint &> /dev/null; then sudo apt-get install -y libxml2-utils; fi
+          COVERAGE_RATE=$(xmllint --xpath "string(//coverage/@line-rate)" coverage-report/Summary.xml)
+          COVERAGE_PERCENT=$(echo "$COVERAGE_RATE * 100" | bc)
+          echo "Total line coverage: $COVERAGE_PERCENT%"
+
+          THRESHOLD=80
+          RESULT=$(echo "$COVERAGE_PERCENT >= $THRESHOLD" | bc)
+          if [ "$RESULT" -eq 1 ]; then
+            echo "Coverage meets threshold ($THRESHOLD%)"
+          else
+            echo "Coverage below threshold ($THRESHOLD%). Failing build."
+            exit 1
+          fi
+
+      - name: Upload HTML coverage report
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report
-          path: '**/TestResults/**/*coverage*'
+          name: html-coverage-report
+          path: coverage-report/
