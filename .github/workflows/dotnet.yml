@@ -28,7 +28,7 @@ jobs:
         run: dotnet test TaskManagementSystem.Tests/TaskManagementSystem.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/coverage.xml
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: TaskManagementSystem.Tests/TestResults/coverage.xml
