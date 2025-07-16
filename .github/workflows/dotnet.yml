@@ -44,12 +44,17 @@ jobs:
           reportgenerator \
             -reports:**/TestResults/*/coverage.cobertura.xml \
             -targetdir:coverage-report \
-            "-reporttypes:Html;XmlSummary"
+            -reporttypes:Html;XmlSummary
+
+      - name: Show coverage summary XML
+        run: cat coverage-report/Summary.xml
 
       - name: Enforce minimum coverage threshold
         run: |
           if ! command -v xmllint &> /dev/null; then sudo apt-get install -y libxml2-utils; fi
-          COVERAGE_PERCENT=$(xmllint --xpath "string(//CoverageSummary/@lineCoverage)" coverage-report/Summary.xml)
+          COVERAGE_RATE=$(xmllint --xpath "string(//coverage/@line-rate)" coverage-report/Summary.xml)
+          echo "Raw coverage rate: $COVERAGE_RATE"
+          COVERAGE_PERCENT=$(echo "$COVERAGE_RATE * 100" | bc)
           echo "Total line coverage: $COVERAGE_PERCENT%"
 
           THRESHOLD=80
